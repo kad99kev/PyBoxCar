@@ -1,0 +1,10 @@
+BoxCar:
+    - Main
+        - Add Space to main.
+        - Add car to main.
+    - BoxCar
+        - Create car shape. @done
+        - Create car wheels with joints. @done
+        - Refactor the car to have chassis class and wheel class.
+        - Create car visuals.
+    - Terrain
