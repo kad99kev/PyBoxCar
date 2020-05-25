@@ -1,5 +1,6 @@
 import arcade
 import pymunk
+import math
 
 class Wheel:
 
@@ -7,34 +8,32 @@ class Wheel:
         self.radius = radius
         self.mass = 10 # TODO: Adjust and make constant
         moment = pymunk.moment_for_circle(self.mass, 0, self.radius, (0, 0))
-        self.body = pymunk.Body(self.mass, moment)
+        self.body = pymunk.Body(self.mass, moment, body_type=pymunk.Body.DYNAMIC)
         self.body.position = position
         self.shape = pymunk.Circle(self.body, self.radius)
+        self.shape.friction = 0.5
 
         space.add(self.body, self.shape)
 
         self.visuals = arcade.ShapeElementList()
 
-    def setup_draw(self, center):
-        self.visuals.center_x = center.x
-        self.visuals.center_y = center.y
+    def setup_draw(self):
+        self.visuals.center_x = self.body.position.x
+        self.visuals.center_y = self.body.position.y
 
         # Draws the wheel
-        w_pos_x = self.body.position.x
-        w_pos_y = self.body.position.y
-        print(w_pos_x, w_pos_y)
-        shape = arcade.create_ellipse_filled(w_pos_x, w_pos_y, self.radius, self.radius, arcade.color.GRAY)
+        shape = arcade.create_ellipse_filled(0, 0, self.radius, self.radius, arcade.color.GRAY)
         self.visuals.append(shape)
         
         # Draws the orientation of wheel
-        end = self.body.position + self.body.rotation_vector * self.radius
-        shape = arcade.create_line(w_pos_x, w_pos_y, end.x , end.y, arcade.color.BLACK, 2)
+        end = self.body.rotation_vector * self.radius
+        shape = arcade.create_line(0, 0, end.x , end.y, arcade.color.BLACK, 2)
         self.visuals.append(shape)
 
-    def update_visuals(self, center):
-        self.visuals.center_x = center.x
-        self.visuals.center_y = center.y
-        self.visuals.angle = self.body.angle
+    def update_visuals(self):
+        self.visuals.center_x = self.body.position.x
+        self.visuals.center_y = self.body.position.y
+        self.visuals.angle = math.degrees(self.body.angle)
 
     def draw(self):
         self.visuals.draw()

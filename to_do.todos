@@ -1,10 +1,17 @@
 BoxCar:
     - Main
-        - Add Space to main.
-        - Add car to main.
+        - Add Space to main. @done
+        - Add car to main. @done
     - BoxCar
         - Create car shape. @done
         - Create car wheels with joints. @done
-        - Refactor the car to have chassis class and wheel class.
-        - Create car visuals.
+        - Refactor the car to have chassis class and wheel class. @done
+        - Create car visuals. @done
+        - Fix issue with car and terrain collision. @done
+        - Fix PivotJoint issue. (Add it to space, realized it later). @done
+        - Fix Chassis issue. @done
+        - Fix Scrolling issue.
     - Terrain
+        - Create inital terrain.
+        - Add variable height.
+        - Make it adjustable.
