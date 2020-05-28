@@ -1,7 +1,7 @@
 import arcade
 import pymunk
 import math
-from constants import MASS
+from constants import CHASSIS_MASS, CHASSIS_FRICTION
 
 class Chassis:
 
@@ -10,8 +10,8 @@ class Chassis:
         self.body.position = pymunk.Vec2d(position)
         self.vertices = vertices
         self.shape = pymunk.Poly(self.body, self.vertices, radius=1)
-        self.shape.friction = 0.5
-        self.shape.mass = MASS
+        self.shape.friction = CHASSIS_FRICTION
+        self.shape.mass = CHASSIS_MASS
 
         space.add(self.body, self.shape)
 

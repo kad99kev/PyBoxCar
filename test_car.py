@@ -4,32 +4,34 @@ import pymunk
 import math
 import random
 from car_parts import Chromosome, Chassis, Wheel
-from constants import MASS, SEED
+from constants import START_POSITION, SEED
 
 
 class TestCar:
 
     def __init__(self, space, chromosome=None):
         
-        vs = [(-20, 25), (19, -34), (-3, 27), (10, 30), (24, -42), (27, -49)]
-        self.chassis = Chassis(space, [700//2, 350], sorted(vs))
+        main_position = pymunk.Vec2d(START_POSITION)
+        vs = [(-25, 10), (25, 25), (25, 0), (25, -25), (-25, -10), (-25, 0)]
+
+        self.chassis = Chassis(space, main_position, vs)
         
-        position_1 = pymunk.Vec2d(-50, -50) + pymunk.Vec2d(700//2, 350)
+        position_1 = pymunk.Vec2d(25, -25) + main_position
         radius_1 = 10
         self.wheel_1 = Wheel(space, position_1, radius_1)
 
-        position_2 = pymunk.Vec2d(50, -50) + pymunk.Vec2d(700//2, 350)
+        position_2 = pymunk.Vec2d(25, 25) + main_position
         radius_2 = 10
         self.wheel_2 = Wheel(space, position_2, radius_2)
 
 
         c1 = pymunk.constraint.PivotJoint(self.chassis.body, self.wheel_1.body, position_1)
         c1.collide_bodies = False
-        m1 = pymunk.SimpleMotor(self.chassis.body, self.wheel_1.body, 5)
+        m1 = pymunk.SimpleMotor(self.chassis.body, self.wheel_1.body, 25)
 
         c2 = pymunk.constraint.PivotJoint(self.chassis.body, self.wheel_2.body, position_2)
         c2.collide_bodies = False
-        m2 = pymunk.SimpleMotor(self.chassis.body, self.wheel_2.body, 5)
+        m2 = pymunk.SimpleMotor(self.chassis.body, self.wheel_2.body, -25)
 
         space.add(c1, m1, c2, m2)
 

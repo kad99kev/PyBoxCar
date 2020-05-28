@@ -10,7 +10,6 @@ BoxCar:
         - Fix issue with car and terrain collision. @done
         - Fix PivotJoint issue. (Add it to space, realized it later). @done
         - Fix Chassis issue. @done
-        - Fix Scrolling issue.
     - Terrain
         - Create inital terrain.
         - Add variable height.

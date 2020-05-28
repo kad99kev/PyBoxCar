@@ -2,16 +2,18 @@ import arcade
 import pymunk
 import math
 
+from constants import WHEEL_FRICTION, WHEEL_MASS
+
 class Wheel:
 
     def __init__(self, space, position, radius):
         self.radius = radius
-        self.mass = 10 # TODO: Adjust and make constant
+        self.mass = WHEEL_MASS
         moment = pymunk.moment_for_circle(self.mass, 0, self.radius, (0, 0))
         self.body = pymunk.Body(self.mass, moment, body_type=pymunk.Body.DYNAMIC)
         self.body.position = position
         self.shape = pymunk.Circle(self.body, self.radius)
-        self.shape.friction = 0.5
+        self.shape.friction = WHEEL_FRICTION
 
         space.add(self.body, self.shape)
 
