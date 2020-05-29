@@ -22,6 +22,7 @@ VERTICES = 6
 NUM_WHEELS = 4 # Keep the number of wheels less than the vertices, else you'll get buggy behaviour!
 WHEEL_SPEED = 50
 WHEEL_RADIUS = 8
+MUTATION_RATE = 0.05 # 5%
 
 # Chassis
 CHASSIS_FRICTION = 0.

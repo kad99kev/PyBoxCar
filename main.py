@@ -3,9 +3,10 @@ import pymunk
 import pymunkoptions
 pymunkoptions.options["debug"] = True
 
-from utils import TestCar
 from box_car import BoxCar
+from test_car import TestCar
 from terrain import Terrain
+from ga import evolve
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_TITLE, DT, GRAVITY, NUM_CARS
 
 
@@ -25,7 +26,7 @@ class MainScreen(arcade.Window):
         for _ in range(NUM_CARS):
             self.cars.append(BoxCar(self.space))
         
-        self.test_car = TestCar(self.space, 0)
+        # self.test_car = TestCar(self.space, 0)
         
         print(len(self.cars))
         
@@ -50,7 +51,7 @@ class MainScreen(arcade.Window):
         for car in self.cars:
             car.draw()
 
-        self.test_car.draw()
+        # self.test_car.draw()
 
     def on_update(self, delta_time):
         self.space.step(DT)
@@ -76,7 +77,19 @@ class MainScreen(arcade.Window):
         for car in self.cars:
             g_s = car.get_chromosome_and_score()
             gene_scores.append(g_s)
-        print(gene_scores)
+        new_genes = evolve(gene_scores)
+        constraints = self.space.constraints
+        for c in constraints:
+            self.space.remove(c)
+        for car in self.cars:
+            self.space.remove(car.chassis.body)
+            for wheel in car.wheels:
+                self.space.remove(wheel.body)
+        
+        self.cars = []
+        for gene in new_genes:
+            self.cars.append(BoxCar(self.space, gene))
+
 
 
 def main():

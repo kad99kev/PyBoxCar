@@ -2,7 +2,8 @@ import arcade
 import pymunk
 
 import math
-from car_parts import Chromosome, Chassis, Wheel
+from ga import Chromosome
+from car_parts import Chassis, Wheel
 from constants import START_POSITION, SIZE
 
 
@@ -14,7 +15,8 @@ class BoxCar:
         self.is_alive = True
         self.check_index = 0
         
-        if chromosome is None:
+        self.chromosome = chromosome
+        if self.chromosome is None:
             self.chromosome = Chromosome.generate_inital_chromosome()
         
         position_main = pymunk.Vec2d(START_POSITION)
@@ -78,7 +80,7 @@ class BoxCar:
                 self.lifespan += 10
             
             self.lifespan -= 1
-            if self.lifespan < 0 and self.is_alive:
+            if self.lifespan <= 0 and self.is_alive:
                 self.is_alive = False
                 self.__set_bodies_to_sleep()
             
@@ -87,7 +89,7 @@ class BoxCar:
         return self.is_alive
 
     def get_chromosome_and_score(self):
-        return self.chromosome.get_genes(), self.check_index + self.lifespan
+        return {'gene': self.chromosome.get_genes(), 'score': self.check_index + self.lifespan + 1}
 
     def __set_bodies_to_sleep(self):
         if not self.chassis.body.is_sleeping:

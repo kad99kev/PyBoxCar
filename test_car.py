@@ -3,7 +3,7 @@ import pymunk
 
 import math
 import random
-from car_parts import Chromosome, Chassis, Wheel
+from car_parts import Chassis, Wheel
 from constants import START_POSITION, SIZE
 
 
