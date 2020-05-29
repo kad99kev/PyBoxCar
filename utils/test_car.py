@@ -4,17 +4,22 @@ import pymunk
 import math
 import random
 from car_parts import Chromosome, Chassis, Wheel
-from constants import START_POSITION, SEED
+from constants import START_POSITION, SIZE
 
 
 class TestCar:
 
-    def __init__(self, space, chromosome=None):
+    def __init__(self, space, num):
+
+        self.lifespan = 1000
+        self.is_alive = True
+        self.check_index = 0
         
         main_position = pymunk.Vec2d(START_POSITION)
-        vs = [(-25, 10), (25, 25), (25, 0), (25, -25), (-25, -10), (-25, 0)]
+        vs = [(-25 + num, 10), (25, 25 + num), (25 + num, 0), (25, -25 + num), (-25 + num, -10), (-25, 0 + num)]
 
         self.chassis = Chassis(space, main_position, vs)
+        self.position = self.chassis.body.position
         
         position_1 = pymunk.Vec2d(25, -25) + main_position
         radius_1 = 10
@@ -46,34 +51,35 @@ class TestCar:
         self.chassis.setup_draw()
 
     def draw(self):
+        self.__update_visuals()
         self.wheel_1.draw()
         self.wheel_2.draw()
         self.chassis.draw()
     
-    def update_visuals(self):
+    def __update_visuals(self):
         self.wheel_1.update_visuals()
         self.wheel_2.update_visuals()
         self.chassis.update_visuals()
 
-    def update(self):
-        pass
+    def update_lifespan(self, checkpoints):
+        car_position = self.chassis.body.position
+        check_position = checkpoints[self.check_index]
+        print(car_position, check_position)
+        print(abs(check_position - car_position).length)
 
-    @staticmethod
-    def generate_inital_chromosome(num_vertices, max_range):
-        genes = []
-
-        random.seed(SEED)
-        for _ in range(num_vertices):
-            x_cor = random.randrange(-max_range, max_range)
-            y_cor = random.randrange(-max_range, max_range)
-            genes.append(((x_cor, y_cor)))
-        wheel1_vertex = random.randrange(-1, len(genes))
-        wheel1_radius = random.randint(0, 50)
+        if checkpoints[self.check_index] == checkpoints[-1]:
+            self.is_alive = False
         
-        wheel2_vertex = random.randrange(-1, len(genes))
-        wheel2_radius = random.randint(0, 50)
-        genes.extend([wheel1_vertex, wheel1_radius, wheel2_vertex, wheel2_radius])
+        if abs(check_position - car_position).length < SIZE and self.is_alive:
+            self.check_index += 1
+            self.lifespan += 100
         
-        chromosome = Chromosome(genes)
+        self.lifespan -= 1
+        if self.lifespan < 0 and self.is_alive:
+            self.is_alive = False
+        
+        print(self.lifespan, self.is_alive, self.check_index)
 
-        return chromosome
+        return self.is_alive
+
+

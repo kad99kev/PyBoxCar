@@ -1,7 +1,7 @@
 import arcade
 import pymunk
 import math
-from constants import CHASSIS_MASS, CHASSIS_FRICTION
+from constants import CHASSIS_MASS, CHASSIS_FRICTION, FILTER
 
 class Chassis:
 
@@ -12,6 +12,7 @@ class Chassis:
         self.shape = pymunk.Poly(self.body, self.vertices, radius=1)
         self.shape.friction = CHASSIS_FRICTION
         self.shape.mass = CHASSIS_MASS
+        self.shape.filter = pymunk.ShapeFilter(group=FILTER)
 
         space.add(self.body, self.shape)
 
@@ -21,7 +22,6 @@ class Chassis:
         self.visuals.center_x = self.body.position.x
         self.visuals.center_y = self.body.position.y
 
-        #TODO: Change car visual
         shape = arcade.create_line_loop(self.vertices, arcade.color.AVOCADO)
         self.visuals.append(shape)
 

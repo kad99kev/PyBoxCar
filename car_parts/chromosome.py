@@ -1,7 +1,7 @@
 import random
 import math
 
-from constants import SEED, SIZE, VERTICES, NUM_WHEELS, WHEEL_SPEED, WHEEL_RADIUS
+from constants import SIZE, VERTICES, NUM_WHEELS, WHEEL_SPEED, WHEEL_RADIUS
 
 class Chromosome:
 
@@ -18,7 +18,7 @@ class Chromosome:
         self.score += 0
     
     def get_vertices(self):
-        return self.genes[:6]
+        return self.genes[:VERTICES]
 
     def wheels_info(self):
         return tuple(self.wheel_genes)
@@ -30,7 +30,6 @@ class Chromosome:
     def generate_inital_chromosome(cls):
         genes = []
 
-        random.seed(SEED)
         for _ in range(VERTICES):
             x_cor = random.randrange(-SIZE, SIZE)
             y_cor = random.randrange(-SIZE, SIZE)
@@ -46,7 +45,7 @@ class Chromosome:
                 continue
             wheel_indices.append(wheel_index)
             wheel_vertex = genes[wheel_index]
-            wheel_radius = random.randint(0, WHEEL_RADIUS)
+            wheel_radius = random.randint(1, WHEEL_RADIUS)
             wheel_speed = random.randint(-WHEEL_SPEED, WHEEL_SPEED)
             wheel_genes.extend([[wheel_vertex, wheel_radius, wheel_speed]])
 

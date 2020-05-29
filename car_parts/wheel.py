@@ -2,7 +2,7 @@ import arcade
 import pymunk
 import math
 
-from constants import WHEEL_FRICTION, WHEEL_MASS
+from constants import WHEEL_FRICTION, WHEEL_MASS, FILTER
 
 class Wheel:
 
@@ -14,6 +14,7 @@ class Wheel:
         self.body.position = position
         self.shape = pymunk.Circle(self.body, self.radius)
         self.shape.friction = WHEEL_FRICTION
+        self.shape.filter = pymunk.ShapeFilter(group=FILTER)
 
         space.add(self.body, self.shape)
 

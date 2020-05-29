@@ -10,7 +10,11 @@ BoxCar:
         - Fix issue with car and terrain collision. @done
         - Fix PivotJoint issue. (Add it to space, realized it later). @done
         - Fix Chassis issue. @done
+        - Implement lifespan.
+        - Delete car if dead.
     - Terrain
-        - Create inital terrain.
-        - Add variable height.
-        - Make it adjustable.
+        - Create inital terrain. @done
+        - Add variable height. @done
+        - Make it adjustable. @done
+    - Genetic Algorithm
+        - Add checkpoints for fitness.

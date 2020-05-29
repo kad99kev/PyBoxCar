@@ -3,10 +3,10 @@ import pymunk
 import pymunkoptions
 pymunkoptions.options["debug"] = True
 
-from test_car import TestCar
+from utils import TestCar
 from box_car import BoxCar
 from terrain import Terrain
-from constants import (SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_TITLE, DT, GRAVITY)
+from constants import SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_TITLE, DT, GRAVITY, NUM_CARS
 
 
 class MainScreen(arcade.Window):
@@ -19,21 +19,64 @@ class MainScreen(arcade.Window):
     def setup(self):
         self.space = pymunk.Space()
         self.space.gravity = GRAVITY
-        self.car = BoxCar(self.space)
-        # self.car = TestCar(self.space)
+        self.space.sleep_time_threshold = 1
+
+        self.cars = []
+        for _ in range(NUM_CARS):
+            self.cars.append(BoxCar(self.space))
+        
+        self.test_car = TestCar(self.space, 0)
+        
+        print(len(self.cars))
+        
         self.terrain = Terrain(self.space)
+        self.checkpoints = self.terrain.get_checkpoints()
+
+        # self.checkpoint_shape = arcade.ShapeElementList()
+        # for checkpoint in self.checkpoints:
+        #     shape = arcade.create_ellipse_filled(checkpoint.x, checkpoint.y, 5, 5, arcade.color.RED)
+        #     shape = arcade.create_ellipse_outline(checkpoint.x, checkpoint.y, 20, 20, arcade.color.RED)
+        #     self.checkpoint_shape.append(shape)
+
+        debug_handler = self.space.add_default_collision_handler()
+        debug_handler.begin = self.debug_handler
+
 
     def on_draw(self):
         arcade.start_render()
 
         self.terrain.draw()
 
-        self.car.update_visuals()
+        for car in self.cars:
+            car.draw()
 
-        self.car.draw()
+        self.test_car.draw()
 
     def on_update(self, delta_time):
         self.space.step(DT)
+
+        all_dead = True
+        for car in self.cars:
+            alive = car.update_lifespan(self.checkpoints)
+            if alive:
+                all_dead = False
+
+        if all_dead:
+            self.new_generation()
+
+    def debug_handler(self, arbiter, space, data):
+        # print(f'Space: {space}')
+        # print(f'Arbiter: {arbiter}')
+        # print(f'Data: {data}')
+
+        return True
+
+    def new_generation(self):
+        gene_scores = []
+        for car in self.cars:
+            g_s = car.get_chromosome_and_score()
+            gene_scores.append(g_s)
+        print(gene_scores)
 
 
 def main():

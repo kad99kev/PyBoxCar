@@ -3,12 +3,16 @@ import pymunk
 
 import math
 from car_parts import Chromosome, Chassis, Wheel
-from constants import START_POSITION
+from constants import START_POSITION, SIZE
 
 
 class BoxCar:
 
     def __init__(self, space, chromosome=None):
+
+        self.lifespan = 1000
+        self.is_alive = True
+        self.check_index = 0
         
         if chromosome is None:
             self.chromosome = Chromosome.generate_inital_chromosome()
@@ -16,6 +20,8 @@ class BoxCar:
         position_main = pymunk.Vec2d(START_POSITION)
         vs = self.chromosome.get_vertices()
         self.chassis = Chassis(space, position_main, vs)
+        self.position = self.chassis.body.position
+
         self.wheels = []
 
         wheel_info = self.chromosome.wheels_info()
@@ -44,14 +50,49 @@ class BoxCar:
         self.chassis.setup_draw()
 
     def draw(self):
-        for wheel in self.wheels:
-            wheel.draw()
-        self.chassis.draw()
+        self.__update_visuals()
+        if self.is_alive:
+            for wheel in self.wheels:
+                wheel.draw()
+            self.chassis.draw()
     
-    def update_visuals(self):
-        for wheel in self.wheels:
-            wheel.update_visuals()
-        self.chassis.update_visuals()
+    def __update_visuals(self):
+        if self.is_alive:
+            for wheel in self.wheels:
+                wheel.update_visuals()
+            self.chassis.update_visuals()       
 
     def get_position(self):
-        return self.chassis.body.position
+        return self.position
+
+    def update_lifespan(self, checkpoints):
+        if self.is_alive:
+            car_position = self.chassis.body.position
+            check_position = checkpoints[self.check_index]
+
+            if checkpoints[self.check_index] == checkpoints[-1]:
+                self.is_alive = False
+            
+            if abs(check_position - car_position).length < SIZE and self.is_alive:
+                self.check_index += 1
+                self.lifespan += 10
+            
+            self.lifespan -= 1
+            if self.lifespan < 0 and self.is_alive:
+                self.is_alive = False
+                self.__set_bodies_to_sleep()
+            
+            print(self.lifespan, self.is_alive, self.check_index)
+
+        return self.is_alive
+
+    def get_chromosome_and_score(self):
+        return self.chromosome.get_genes(), self.check_index + self.lifespan
+
+    def __set_bodies_to_sleep(self):
+        if not self.chassis.body.is_sleeping:
+            self.chassis.body.sleep()
+        
+        for wheel in self.wheels:
+            if not wheel.body.is_sleeping:
+                wheel.body.sleep()
