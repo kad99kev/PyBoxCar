@@ -17,4 +17,5 @@ BoxCar:
         - Add variable height. @done
         - Make it adjustable. @done
     - Genetic Algorithm
-        - Add checkpoints for fitness.
+        - Add checkpoints for fitness. @done
+        - Fix issues with new generation.
