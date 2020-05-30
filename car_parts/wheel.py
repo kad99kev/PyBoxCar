@@ -5,6 +5,9 @@ import math
 from constants import WHEEL_FRICTION, WHEEL_MASS, FILTER
 
 class Wheel:
+    '''
+    The wheel class of the car.
+    '''
 
     def __init__(self, space, position, radius):
         self.radius = radius
@@ -21,6 +24,10 @@ class Wheel:
         self.visuals = arcade.ShapeElementList()
 
     def setup_draw(self):
+        '''
+        Creating the inital shapes to be rendered later by the BoxCar class.
+        '''
+        
         self.visuals.center_x = self.body.position.x
         self.visuals.center_y = self.body.position.y
 
@@ -34,9 +41,19 @@ class Wheel:
         self.visuals.append(shape)
 
     def update_visuals(self):
+        '''
+        To update the visuals after every step.
+        Called by the parent class.
+        '''
+        
         self.visuals.center_x = self.body.position.x
         self.visuals.center_y = self.body.position.y
         self.visuals.angle = math.degrees(self.body.angle)
 
     def draw(self):
+        '''
+        To render the wheel.
+        Called by the parent class.
+        '''
+
         self.visuals.draw()

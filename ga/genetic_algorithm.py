@@ -1,7 +1,7 @@
 import random
 import math
 
-from constants import NUM_CARS, MUTATION_RATE, SIZE, VERTICES, NUM_WHEELS, WHEEL_SPEED, WHEEL_RADIUS
+from constants import NUM_CARS, MUTATION_RATE, SIZE, VERTICES, WHEEL_SPEED, WHEEL_RADIUS
 from .chromosome import Chromosome
 
 def evolve(population):
@@ -37,46 +37,40 @@ def _pick_one(population):
 
 def _reproduce(parent_1, parent_2):
     child_gene = []
-    midpoint = random.randint(0, len(parent_1))
-    for i in range(len(parent_1)):
+    midpoint = random.randint(0, VERTICES)
+    for i, p_zip in enumerate(zip(parent_1, parent_2)):
+        p_1, p_2 = p_zip
         if i < midpoint:
-            child_gene.append(parent_1[i])
+            child_gene.append(list(p_1))
         else:
-            child_gene.append(parent_2[i])
+            child_gene.append(list(p_2))
     child_gene = _mutate(child_gene)
-    sort_vert = sorted(child_gene[:VERTICES], key=lambda point: math.atan2(point[1], point[0]))
-    child_gene[:VERTICES] = sort_vert
+    child_gene = sorted(child_gene, key=lambda point: math.atan2(point[0][1], point[0][0]))
     child = Chromosome(child_gene)
     return child
 
 def _mutate(child_gene):
-    for index in range(len(child_gene)):
+    # child_gene = []
+    for i in range(len(child_gene)):
         if random.random() < MUTATION_RATE:
-            gene_type = child_gene[index]
-            if isinstance(gene_type, tuple):
-                mutation = _generate_new_vertex(child_gene)
+            if random.random() < 0.5:
+                new_vertex = _generate_new_vertex()
+                child_gene[i][0] = new_vertex
             else:
-                mutation = _generate_new_wheel(child_gene)
-            child_gene[index] = mutation
+                new_wheel = _generate_new_wheel()
+                child_gene[i][1] = new_wheel
     return child_gene
 
-def _generate_new_vertex(child_gene):
+def _generate_new_vertex():
     x_cor = random.randrange(-SIZE, SIZE)
     y_cor = random.randrange(-SIZE, SIZE)
     new_vertex = (x_cor, y_cor)
     return new_vertex
 
-
-
-def _generate_new_wheel(child_gene):
+def _generate_new_wheel():
     wheel_index = random.randrange(-1, VERTICES)
     if wheel_index == -1:
-        return [(-1, -1), -1, -1]
-    wheel_vertex = child_gene[wheel_index]
-    wheel_radius = random.randint(1, WHEEL_RADIUS)
+        return [-1, -1]
+    wheel_radius = random.randint(5, WHEEL_RADIUS)
     wheel_speed = random.randint(-WHEEL_SPEED, WHEEL_SPEED)
-    wheel_gene = [wheel_vertex, wheel_radius, wheel_speed]
-    if wheel_gene in child_gene:
-        return [(-1, -1), -1, -1]
-    return wheel_gene
-
+    return [wheel_radius, wheel_speed]

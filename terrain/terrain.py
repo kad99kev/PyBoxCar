@@ -1,10 +1,14 @@
 import arcade
 import pymunk
 import random
+import heapq
 
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TERRAIN_FRICTION, SEED, SIZE
+from constants import BOX_WIDTH, SCREEN_HEIGHT, TERRAIN_FRICTION, SEED, SIZE
 
 class Terrain:
+    '''
+    Terrain class that creates a terrain based on the seed.
+    '''
 
     def __init__(self, space):
         self.segment_length = 30
@@ -16,6 +20,9 @@ class Terrain:
         self.__setup_draw()
 
     def __setup(self, space):
+        '''
+        The main method to setup the terrain and generate checkpoints.
+        '''
 
         checkpoints = []
         correction = pymunk.Vec2d(0, SIZE)
@@ -33,6 +40,7 @@ class Terrain:
             end_pos = pymunk.Vec2d(self.segment_length * (i + 1), current_height)
             shape = pymunk.Segment(space.static_body, start_pos, end_pos, 0.0)
             shape.friction = TERRAIN_FRICTION
+            shape.set_neighbors(start_pos, end_pos)
             space.add(shape)
             self.terrain_shapes.append(shape)
             
@@ -52,6 +60,7 @@ class Terrain:
             end_pos = pymunk.Vec2d(self.segment_length * (i + 1), previous_height)
             shape = pymunk.Segment(space.static_body, start_pos, end_pos, 0.0)
             shape.friction = TERRAIN_FRICTION
+            shape.set_neighbors(start_pos, end_pos)
             space.add(shape)
             self.terrain_shapes.append(shape)
             
@@ -72,6 +81,7 @@ class Terrain:
             end_pos = pymunk.Vec2d(self.segment_length * (i + 1), current_height)
             shape = pymunk.Segment(space.static_body, start_pos, end_pos, 0.0)
             shape.friction = TERRAIN_FRICTION
+            shape.set_neighbors(start_pos, end_pos)
             space.add(shape)
             self.terrain_shapes.append(shape)
             
@@ -91,6 +101,7 @@ class Terrain:
             end_pos = pymunk.Vec2d(self.segment_length * (i + 1), previous_height)
             shape = pymunk.Segment(space.static_body, start_pos, end_pos, 0.0)
             shape.friction = TERRAIN_FRICTION
+            shape.set_neighbors(start_pos, end_pos)
             space.add(shape)
             self.terrain_shapes.append(shape)
             
@@ -110,6 +121,7 @@ class Terrain:
             end_pos = pymunk.Vec2d(self.segment_length * (i + 1), current_height)
             shape = pymunk.Segment(space.static_body, start_pos, end_pos, 0.0)
             shape.friction = TERRAIN_FRICTION
+            shape.set_neighbors(start_pos, end_pos)
             space.add(shape)
             self.terrain_shapes.append(shape)
             
@@ -125,29 +137,47 @@ class Terrain:
         space.add(shape)
         self.terrain_shapes.append(shape)
         # (0, height) to (width, height)
-        shape = pymunk.Segment(space.static_body, (0, SCREEN_HEIGHT), (SCREEN_WIDTH, SCREEN_HEIGHT), 0.0)
+        shape = pymunk.Segment(space.static_body, (0, SCREEN_HEIGHT), (BOX_WIDTH, SCREEN_HEIGHT), 0.0)
         shape.friction = TERRAIN_FRICTION
         space.add(shape)
         self.terrain_shapes.append(shape)
-        # (width, height) to (width, 0)
-        shape = pymunk.Segment(space.static_body, (SCREEN_WIDTH, SCREEN_HEIGHT), (SCREEN_WIDTH, 0), 0.0)
+        # (width, height) to (width, current_height)
+        shape = pymunk.Segment(space.static_body, (BOX_WIDTH, SCREEN_HEIGHT), (BOX_WIDTH, current_height), 0.0)
         shape.friction = TERRAIN_FRICTION
         space.add(shape)
         self.terrain_shapes.append(shape)
+
 
         return checkpoints
 
 
     def __setup_draw(self):
+        '''
+        Setting up the terrain shapes to be rendered.
+        '''
+
         self.visuals.center_x = 0
         self.visuals.center_y = 0
+        
         for line in self.terrain_shapes:
             start_x, start_y = line.a
             end_x, end_y = line.b
             self.visuals.append(arcade.create_line(start_x, start_y, end_x, end_y, arcade.color.BLACK, 2))
+        
+        self.visuals.append(arcade.create_line(0, end_y - 40, BOX_WIDTH, end_y - 40, arcade.color.BLACK, 2))
+        self.visuals.append(arcade.create_line(BOX_WIDTH, end_y, BOX_WIDTH, end_y - 40, arcade.color.BLACK, 2))
+        
 
     def draw(self):
+        '''
+        Drawing the terrain shapes.
+        '''
+
         self.visuals.draw()
 
     def get_checkpoints(self):
+        '''
+        Returns the checkpoints created during the inital setup of the terrain.
+        '''
+
         return self.checkpoints

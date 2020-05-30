@@ -1,15 +1,16 @@
 # MainScreen
-SCREEN_WIDTH = 1020
+SCREEN_WIDTH = 1220
 SCREEN_HEIGHT = 800
 SCREEN_TITLE = "BoxCar"
+BOX_WIDTH = 1020
 
 # Space
 DT = 1 / 120.0
 GRAVITY = (0, -980)
-NUM_CARS = 4
+NUM_CARS = 20
 
 # Terrain
-TERRAIN_FRICTION = 1
+TERRAIN_FRICTION = 0.6
 SEED = 3
 
 # BoxCar
@@ -19,17 +20,16 @@ FILTER = 1
 # Genes
 SIZE = 40
 VERTICES = 6
-NUM_WHEELS = 4 # Keep the number of wheels less than the vertices, else you'll get buggy behaviour!
 WHEEL_SPEED = 50
-WHEEL_RADIUS = 8
+WHEEL_RADIUS = 10
 MUTATION_RATE = 0.05 # 5%
 
 # Chassis
-CHASSIS_FRICTION = 0.
+CHASSIS_FRICTION = 0.2
 CHASSIS_MASS = 50
 
 # Wheel
-WHEEL_FRICTION = 1.2
+WHEEL_FRICTION = 1.0
 WHEEL_MASS = 5
 
 
