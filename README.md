@@ -1,8 +1,10 @@
 # PyBoxCar
 A BoxCar2D implementation in Python.
 
-## Observations
+## Demo
+
 You can check out the GIFs from the simulation [here.](GIFs.md)
+
 ![screenshot](assets/homepage.png)
 
 ## Getting Started
