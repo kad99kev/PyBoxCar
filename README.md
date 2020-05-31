@@ -1,5 +1,5 @@
 # PyBoxCar
-A BoxCar2D implementation in Python.
+A BoxCar2D implementation in Python. The aim of the cars in this simulation is to start from the top left corner and reach the goal at the bottom right, as quickly as possible. The Genetic Algorithm is used to optimize the cars after every generation.
 
 ## Demo
 
