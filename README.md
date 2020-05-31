@@ -1,2 +1,32 @@
 # PyBoxCar
-BoxCar2D implementation in Python.
+A BoxCar2D implementation in Python.
+
+## Getting Started
+Python 3.6+
+
+(Arcade runs on Windows, Mac OS X, and Linux. Arcade requires Python 3.6 or newer. It does not run on Python 2.x though Pymunk runs on both versions of python.)
+
+ ### Installing
+ You will only need to install the arcade and pymunk libraries for graphics and physics simulation.
+Matplotlib is used to plot the best score across generations to provide a far idea about the performance of the model.
+
+More information on  [arcade](https://arcade.academy/installation.html)  here.
+
+More information on  [pymunk](http://www.pymunk.org/en/latest/installation.html)  here.
+
+More information on [matplotlib](https://matplotlib.org/3.1.0/index.html) here.
+
+```
+pymunk==5.6.0
+arcade==2.3.10
+matplotlib==3.2.1
+```
+I've included them in requirements.txt
+
+## License
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/kad99kev/AI-Car/blob/master/LICENSE.md) file for details.
+
+## References
+* [The Original Implementation](http://boxcar2d.com/)
+* [Another HTML Implementation](https://rednuht.org/genetic_cars_2/)
+* [A Genetic Algorithm Playlist](https://www.youtube.com/watch?v=9zfeTw-uFCw&list=PLRqwX-V7Uu6bJM3VgzjNV5YxVxUwzALHV)

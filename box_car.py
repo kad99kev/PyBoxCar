@@ -4,7 +4,7 @@ import pymunk
 import math
 from ga import Chromosome
 from car_parts import Chassis, Wheel
-from constants import START_POSITION, SIZE
+from constants import START_POSITION, SIZE, REWARD
 
 
 class BoxCar:
@@ -105,7 +105,7 @@ class BoxCar:
             
             if abs(check_position - car_position).length < SIZE and self.is_alive:
                 self.checkpoint_index += 1
-                self.lifespan += 10
+                self.lifespan += REWARD
             
             self.lifespan -= 1
             if self.lifespan <= 0 and self.is_alive:

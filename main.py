@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 from box_car import BoxCar
-from test_car import TestCar
 from terrain import Terrain
 from ga import evolve
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_TITLE, DT, GRAVITY, NUM_CARS
