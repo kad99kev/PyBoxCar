@@ -1,6 +1,10 @@
 # PyBoxCar
 A BoxCar2D implementation in Python.
 
+## Observations
+You can check out the GIFs from the simulation [here.](GIFs.md)
+![screenshot](assets/homepage.png)
+
 ## Getting Started
 Python 3.6+
 
@@ -24,7 +28,7 @@ matplotlib==3.2.1
 I've included them in requirements.txt
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/kad99kev/AI-Car/blob/master/LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
 ## References
 * [The Original Implementation](http://boxcar2d.com/)
