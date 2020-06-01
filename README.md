@@ -14,7 +14,7 @@ Python 3.6+
 
  ### Installing
  You will only need to install the arcade and pymunk libraries for graphics and physics simulation.
-Matplotlib is used to plot the best score across generations to provide a far idea about the performance of the model.
+Matplotlib is used to plot the best score across generations to provide a fair idea about the performance of the model.
 
 More information on  [arcade](https://arcade.academy/installation.html)  here.
 
